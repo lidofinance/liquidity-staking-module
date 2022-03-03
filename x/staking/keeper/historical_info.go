@@ -3,19 +3,21 @@ package keeper
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/iqlusioninc/liquidity-staking-module/x/staking/types"
+
+	cosmosStaking "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 // GetHistoricalInfo gets the historical info at a given height
-func (k Keeper) GetHistoricalInfo(ctx sdk.Context, height int64) (types.HistoricalInfo, bool) {
+func (k Keeper) GetHistoricalInfo(ctx sdk.Context, height int64) (cosmosStaking.HistoricalInfo, bool) {
 	store := ctx.KVStore(k.storeKey)
 	key := types.GetHistoricalInfoKey(height)
 
 	value := store.Get(key)
 	if value == nil {
-		return types.HistoricalInfo{}, false
+		return cosmosStaking.HistoricalInfo{}, false
 	}
 
-	return types.MustUnmarshalHistoricalInfo(k.cdc, value), true
+	return cosmosStaking.MustUnmarshalHistoricalInfo(k.cdc, value), true
 }
 
 // SetHistoricalInfo sets the historical info at a given height
